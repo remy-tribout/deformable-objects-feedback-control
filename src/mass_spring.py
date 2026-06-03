@@ -75,7 +75,6 @@ def rebuild_rod(p_inner_flat):
     return p
 
 
-# Resample sparse target points into a full N-point desired curve for ISG.
 def resample_targets(points, N):
     from scipy.interpolate import CubicSpline
     t = np.linspace(0, 1, len(points))
@@ -104,7 +103,7 @@ def elastic_energy(p_inner_flat):
     return Es + Eb
 
 
-# Distance from each target point to the closest rod node
+# Distance 
 def dist_targets(p, targets):
     return sum(np.min(np.sum((p - t)**2, axis=1)) for t in targets)
 
@@ -247,11 +246,6 @@ ax = fig.add_subplot(projection="3d")
 ax.plot(s_desired[:, 0], s_desired[:, 1], s_desired[:, 2],
         "g--", lw=1.5, alpha=0.7, label="Desired shape")
 
-for i, shape in enumerate(intermediary_shapes[:-1]):
-    if i % max(1, len(intermediary_shapes) // 5) == 0:
-        ax.plot(shape[:, 0], shape[:, 1], shape[:, 2],
-                color="gray", lw=0.8, alpha=0.35)
-
 ax.plot(p_final[:, 0], p_final[:, 1], p_final[:, 2],
         color="steelblue", lw=2, label="Rod (mass-spring)")
 ax.scatter(p_final[:, 0], p_final[:, 1], p_final[:, 2],
@@ -267,11 +261,11 @@ ax.set_xlim(-0.05, 0.25)
 ax.set_ylim(-0.15, 0.15)
 ax.set_zlim(0.0, 0.30)
 plt.tight_layout()
-plt.savefig("mass_spring_modified_result.png", dpi=150)
+plt.savefig("mass_spring_result.png", dpi=150)
 plt.show()
 
 # Save
-np.savez("mass_spring_modified_results.npz",
+np.savez("mass_spring_results.npz",
          p=p_final,
          targets=targets_final,
          desired_shape=s_desired)
